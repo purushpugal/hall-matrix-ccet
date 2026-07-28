@@ -55,13 +55,16 @@ const db = new sqlite3.Database(
 /* =======================
    3. MIDDLEWARE
    ======================= */
+app.set("trust proxy", 1);
+
 app.use(cors({
-  origin: "http://localhost:5173", // React Frontend URL
+  origin: true,
   credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-const upload = multer({ dest: "uploads/" });
+
+const upload = multer({ dest: uploadDir });
 
 /* =======================
    4. SESSION
@@ -261,9 +264,7 @@ app.post("/api/auth/student-login", (req, res) => {
   const cleanRegNo = String(regno).trim().replace(/\.0$/, "");
 
   db.get("SELECT * FROM tenants WHERE id = ?", [tid], (err, tenant) => {
-    if (err || !tenant) {
-      return res.status(404).json({ error: "Organization Code not found" });
-    }
+    const activeTenant = tenant || { id: tid, name: "CCET Institution" };
 
     let tenantDb;
     try {
@@ -293,7 +294,7 @@ app.post("/api/auth/student-login", (req, res) => {
               regno: cleanRegNo,
               name,
               tenant_id: tid,
-              tenant_name: tenant.name,
+              tenant_name: activeTenant.name,
               dept,
               batch,
               degree
@@ -1028,11 +1029,8 @@ app.get("/api/t/:tenant_id/student-view", (req, res) => {
   const tid = req.params.tenant_id.toLowerCase();
   
   db.get("SELECT * FROM tenants WHERE id = ?", [tid], (err, tenant) => {
-    if (err || !tenant) {
-      return res.status(404).json({ error: "Organization not found" });
-    }
-    
-    res.json({ tenant });
+    const activeTenant = tenant || { id: tid, name: "CCET Institution" };
+    res.json({ tenant: activeTenant });
   });
 });
 
@@ -1042,9 +1040,7 @@ app.post("/api/t/:tenant_id/student-view", (req, res) => {
   regno = regno.replace(/\.0$/, "");
 
   db.get("SELECT * FROM tenants WHERE id = ?", [tid], (err, tenant) => {
-    if (err || !tenant) {
-      return res.status(404).json({ error: "Organization not found" });
-    }
+    const activeTenant = tenant || { id: tid, name: "CCET Institution" };
 
     let tenantDb;
     try {
