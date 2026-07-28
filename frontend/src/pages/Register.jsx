@@ -75,7 +75,7 @@ export const Register = () => {
               placeholder="e.g. ccet"
               value={tenantId}
               onChange={(e) => setTenantId(e.target.value)}
-              pattern="^[a-z0-9_-]+$"
+              pattern="[a-z0-9_\-]+"
               title="Lowercase letters, numbers, hyphens and underscores only"
               required
               disabled={loading}

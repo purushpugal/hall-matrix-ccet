@@ -2057,7 +2057,26 @@ app.get(/.*/, (req, res, next) => {
 });
 
 /* =======================
-   19. SERVER LISTEN
+   19. GLOBAL ERROR HANDLERS
+   ======================= */
+app.use((err, req, res, next) => {
+  console.error("Express Error Catch:", err.stack || err.message || err);
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(err.status || 500).json({ error: err.message || "Internal Server Error" });
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err.stack || err.message || err);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled Promise Rejection:", reason);
+});
+
+/* =======================
+   20. SERVER LISTEN
    ======================= */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
