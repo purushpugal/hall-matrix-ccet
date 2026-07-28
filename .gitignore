@@ -1,0 +1,38 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Production build artifacts
+dist/
+**/dist/
+build/
+**/build/
+
+# SQLite databases (prevent committing private tenant databases & credentials)
+*.db
+*.sqlite
+*.sqlite3
+**/databases/
+**/hall_matrix.db
+
+# Multer uploads directory
+uploads/
+**/uploads/
+
+# Log files
+*.log
+logs/
+**/logs/
+
+# Editor / IDE directories
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating system files
+.DS_Store
+Thumbs.db

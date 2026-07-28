@@ -1,0 +1,21 @@
+{
+  "name": "hall-matrix-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "express": "^5.2.1",
+    "express-session": "^1.18.2",
+    "hall-matrix": "file:..",
+    "multer": "^2.0.2",
+    "pdfkit": "^0.17.2",
+    "sqlite3": "^5.1.7",
+    "xlsx": "^0.18.5"
+  }
+}
